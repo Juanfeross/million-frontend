@@ -1,74 +1,51 @@
-# React + TypeScript + Vite
+# EstateHub – Gestión de Propiedades
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Aplicación web para explorar, filtrar y visualizar propiedades inmobiliarias de forma moderna y responsiva.
 
-Currently, two official plugins are available:
+## Requisitos previos
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- Node.js 18+ y npm
 
-## React Compiler
+## Instalación y desarrollo
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+```bash
+# Instalación de dependencias
+npm install
 
-## Expanding the ESLint configuration
+# Entorno de desarrollo con Vite
+npm run dev
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+# Compilación para producción
+npm run build
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+# Vista previa de la build
+npm run preview
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## Tecnologías principales
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+- Vite + React + TypeScript
+- Tailwind CSS y shadcn/ui
+- React Router
+- Supabase (integración preparada)
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
-# million-frontend
+## Estructura destacada
+
+- `src/pages`: vistas principales
+- `src/components`: componentes reutilizables (incluye UI de shadcn)
+- `src/data`: datos mock para pruebas
+- `src/integrations/supabase`: cliente y tipos base
+- `src/hooks`: hooks personalizados (toasts, detección móvil, etc.)
+
+## Configuración adicional
+
+- Variables de entorno: copiar `.env.example` a `.env` y ajustar valores
+- Ajustar metadatos en `index.html` para la marca deseada
+
+## Buenas prácticas
+
+- Ejecutar `npm run build` antes de subir cambios para validar que todo compile
+- Mantener la consistencia de estilos usando la configuración de Tailwind
+- Usar los componentes de `src/components/ui` para patrones comunes (formularios, diálogos, tablas, etc.)
+
+Con esto deberías tener todo lo necesario para continuar el desarrollo sin referencias externas.

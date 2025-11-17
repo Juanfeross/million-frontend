@@ -1,4 +1,6 @@
-# Logs
+###############################################
+# LOGS
+###############################################
 logs
 *.log
 npm-debug.log*
@@ -7,18 +9,122 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
-node_modules
-dist
-dist-ssr
+
+###############################################
+# DEPENDENCIES
+###############################################
+node_modules/
+.pnp/
+.pnp.js
+
+
+###############################################
+# BUILD OUTPUT
+###############################################
+dist/
+dist-ssr/
+build/
 *.local
 
-# Editor directories and files
+
+###############################################
+# ENVIRONMENT FILES
+###############################################
+.env
+.env.*
+!.env.example
+
+
+###############################################
+# TESTING
+###############################################
+coverage/
+.nyc_output/
+*.lcov
+
+
+###############################################
+# EDITOR FILES
+###############################################
 .vscode/*
 !.vscode/extensions.json
-.idea
-.DS_Store
+.idea/
+*.swp
+*.swo
+*.tmp
+*.temp
+*~
 *.suo
 *.ntvs*
 *.njsproj
 *.sln
 *.sw?
+
+
+###############################################
+# OS FILES
+###############################################
+Thumbs.db
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Desktop.ini
+
+
+###############################################
+# TYPESCRIPT
+###############################################
+*.tsbuildinfo
+
+
+###############################################
+# NPM / YARN / BUN
+###############################################
+.npm/
+.yarn-integrity
+bun.lockb   # important for Bun projects
+.cache/      # vite, eslint, etc.
+.parcel-cache/
+
+
+###############################################
+# VITE
+###############################################
+.vite/
+
+
+###############################################
+# NEXT / NUXT (future-proof)
+###############################################
+.next/
+out/
+.nuxt/
+
+
+###############################################
+# SUPABASE (VERY IMPORTANT)
+###############################################
+supabase/.branches
+supabase/.temp
+supabase/.cache
+supabase/config.toml
+supabase/functions/**/*.env
+supabase/functions/**/*.local
+supabase/functions/**/node_modules/
+supabase/migrations/.snap
+
+
+###############################################
+# SHADCN/UI (cache + generated)
+###############################################
+components.json
+*.d.ts.timestamp*
+
+
+###############################################
+# PROJECT SPECIFIC
+###############################################
+elegant-react-quest-main
