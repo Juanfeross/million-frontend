@@ -21,6 +21,7 @@ export interface PropertyDetail extends PropertySummary {
   year?: number;
   images?: string[];
   owner?: PropertyOwner;
+  traces?: PropertyTrace[];
 }
 
 export interface PropertyFilters {
@@ -36,4 +37,12 @@ export interface PropertyListData {
   page: number;
   pageSize: number;
   totalPages: number;
+}
+
+export interface PropertyTrace {
+  idPropertyTrace: string;
+  name: string;
+  dateSale: string;
+  value: number;
+  tax: number;
 }

@@ -5,7 +5,6 @@ const ENDPOINTS = {
   LIST: "/api/properties",
   SEARCH: "/api/properties/search",
   DETAIL: (id: string) => `/api/properties/${id}`,
-  IMAGE: (id: string) => `/api/properties/${id}/image`,
 };
 
 const hasFilters = (filters?: PropertyFilters) => {
@@ -34,6 +33,4 @@ export const propertiesService = {
   },
 
   getPropertyById: (id: string) => apiClient.get<PropertyDetail>(ENDPOINTS.DETAIL(id)),
-
-  getPrimaryImage: (id: string) => apiClient.get<string>(ENDPOINTS.IMAGE(id)),
 };

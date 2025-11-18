@@ -10,9 +10,10 @@ interface PropertyFiltersProps {
   value: PropertyFiltersType;
   onFilter: (filters: PropertyFiltersType) => void;
   onReset: () => void;
+  disabled?: boolean;
 }
 
-export const PropertyFilters = ({ value, onFilter, onReset }: PropertyFiltersProps) => {
+export const PropertyFilters = ({ value, onFilter, onReset, disabled = false }: PropertyFiltersProps) => {
   const [filters, setFilters] = useState<PropertyFiltersType>(value);
 
   useEffect(() => {
@@ -20,10 +21,12 @@ export const PropertyFilters = ({ value, onFilter, onReset }: PropertyFiltersPro
   }, [value]);
 
   const handleSearch = () => {
+    if (disabled) return;
     onFilter(filters);
   };
 
   const handleReset = () => {
+    if (disabled) return;
     onReset();
   };
 
@@ -34,7 +37,7 @@ export const PropertyFilters = ({ value, onFilter, onReset }: PropertyFiltersPro
   };
 
   return (
-    <Card className="p-6 bg-card border-border/50 shadow-md">
+    <Card className="p-6 bg-card border-border/50 shadow-sm">
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
         <div className="space-y-2">
           <Label htmlFor="name" className="text-sm font-medium text-foreground">
@@ -47,6 +50,7 @@ export const PropertyFilters = ({ value, onFilter, onReset }: PropertyFiltersPro
             onChange={(e) => setFilters({ ...filters, name: e.target.value })}
             onKeyPress={handleKeyPress}
             className="bg-background border-border"
+            disabled={disabled}
           />
         </div>
 
@@ -61,6 +65,7 @@ export const PropertyFilters = ({ value, onFilter, onReset }: PropertyFiltersPro
             onChange={(e) => setFilters({ ...filters, address: e.target.value })}
             onKeyPress={handleKeyPress}
             className="bg-background border-border"
+            disabled={disabled}
           />
         </div>
 
@@ -78,6 +83,7 @@ export const PropertyFilters = ({ value, onFilter, onReset }: PropertyFiltersPro
             }
             onKeyPress={handleKeyPress}
             className="bg-background border-border"
+            disabled={disabled}
           />
         </div>
 
@@ -95,6 +101,7 @@ export const PropertyFilters = ({ value, onFilter, onReset }: PropertyFiltersPro
             }
             onKeyPress={handleKeyPress}
             className="bg-background border-border"
+            disabled={disabled}
           />
         </div>
       </div>
@@ -103,6 +110,7 @@ export const PropertyFilters = ({ value, onFilter, onReset }: PropertyFiltersPro
         <Button
           onClick={handleSearch}
           className="flex-1 md:flex-none bg-primary hover:bg-primary/90 text-primary-foreground"
+          disabled={disabled}
         >
           <Search className="w-4 h-4 mr-2" />
           Buscar
@@ -111,6 +119,7 @@ export const PropertyFilters = ({ value, onFilter, onReset }: PropertyFiltersPro
           onClick={handleReset}
           variant="outline"
           className="flex-1 md:flex-none"
+          disabled={disabled}
         >
           <RotateCcw className="w-4 h-4 mr-2" />
           Limpiar
