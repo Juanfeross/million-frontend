@@ -111,8 +111,9 @@ export const PropertyFilters = ({ value, onFilter, onReset, disabled = false }: 
           onClick={handleSearch}
           className="flex-1 md:flex-none bg-primary hover:bg-primary/90 text-primary-foreground"
           disabled={disabled}
+          aria-label="Buscar propiedades con los filtros aplicados"
         >
-          <Search className="w-4 h-4 mr-2" />
+          <Search className="w-4 h-4 mr-2" aria-hidden="true" />
           Buscar
         </Button>
         <Button
@@ -120,8 +121,9 @@ export const PropertyFilters = ({ value, onFilter, onReset, disabled = false }: 
           variant="outline"
           className="flex-1 md:flex-none"
           disabled={disabled}
+          aria-label="Limpiar todos los filtros de búsqueda"
         >
-          <RotateCcw className="w-4 h-4 mr-2" />
+          <RotateCcw className="w-4 h-4 mr-2" aria-hidden="true" />
           Limpiar
         </Button>
       </div>

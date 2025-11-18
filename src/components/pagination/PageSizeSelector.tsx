@@ -12,7 +12,7 @@ export const PageSizeSelector = ({ value, options, onChange, disabled }: PageSiz
     <div className="inline-flex flex-wrap items-center gap-2 text-sm text-muted-foreground whitespace-nowrap">
       <span>Mostrar</span>
       <Select value={String(value)} onValueChange={(val) => onChange(Number(val))} disabled={disabled}>
-        <SelectTrigger className="w-20 h-9 text-sm">
+        <SelectTrigger className="w-20 h-9 text-sm" aria-label={`Mostrar ${value} propiedades por página`}>
           <SelectValue placeholder="Cantidad" />
         </SelectTrigger>
         <SelectContent>

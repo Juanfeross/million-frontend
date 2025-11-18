@@ -1,4 +1,5 @@
 import { Loader2 } from "lucide-react";
+import { formatNumber } from "@/utils/formatters";
 
 interface PropertiesHeaderProps {
   total: number;
@@ -15,7 +16,7 @@ export const PropertiesHeader = ({ total, isFetching }: PropertiesHeaderProps) =
           <span className="text-base md:text-lg text-muted-foreground font-medium">
             {isFetching ? "Actualizando..." : (
               <>
-                <span className="text-primary font-semibold">{total.toLocaleString()}</span>{" "}
+                <span className="text-primary font-semibold">{formatNumber(total)}</span>{" "}
                 {total === 1 ? "propiedad" : "propiedades"}
               </>
             )}

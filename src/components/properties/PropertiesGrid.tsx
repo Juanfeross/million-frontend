@@ -1,5 +1,5 @@
 import { PropertySummary } from "@/types/property";
-import { PropertyCard } from "@/components/PropertyCard";
+import { PropertyCard } from "@/components/properties/PropertyCard";
 import { Skeleton } from "@/components/ui/skeleton";
 
 interface PropertiesGridProps {
@@ -22,12 +22,13 @@ export const PropertiesGrid = ({ properties, isLoading, isFetching, onPropertyCl
 
   return (
     <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-      {properties.map((property) => (
+      {properties.map((property, index) => (
         <PropertyCard
           key={property.idProperty}
           property={property}
           onClick={() => onPropertyClick(property.idProperty)}
           disabled={isFetching}
+          isLCP={index < 3} // Primeras 3 imágenes son LCP candidates
         />
       ))}
     </div>

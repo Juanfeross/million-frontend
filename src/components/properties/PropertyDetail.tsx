@@ -41,9 +41,35 @@ export const PropertyDetail = ({
   const [isPreviewOpen, setIsPreviewOpen] = useState(false);
 
   useEffect(() => {
-    document.body.style.overflow = open ? "hidden" : "";
-    return () => {
+    if (!open) {
       document.body.style.overflow = "";
+      return;
+    }
+
+    const originalOverflow = document.body.style.overflow || "";
+    document.body.style.overflow = "hidden";
+
+    return () => {
+      document.body.style.overflow = originalOverflow;
+    };
+  }, [open]);
+
+  useEffect(() => {
+    const handlePageHide = () => {
+      document.body.style.overflow = "";
+    };
+
+    const handlePageShow = () => {
+      if (open) {
+        document.body.style.overflow = "hidden";
+      }
+    };
+
+    window.addEventListener("pagehide", handlePageHide);
+    window.addEventListener("pageshow", handlePageShow);
+    return () => {
+      window.removeEventListener("pagehide", handlePageHide);
+      window.removeEventListener("pageshow", handlePageShow);
     };
   }, [open]);
 

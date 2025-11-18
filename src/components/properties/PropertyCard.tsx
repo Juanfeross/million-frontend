@@ -11,9 +11,10 @@ interface PropertyCardProps {
   property: PropertySummary;
   onClick: () => void;
   disabled?: boolean;
+  isLCP?: boolean; // Indica si es una de las primeras imágenes (LCP candidate)
 }
 
-export const PropertyCard = ({ property, onClick, disabled = false }: PropertyCardProps) => {
+export const PropertyCard = ({ property, onClick, disabled = false, isLCP = false }: PropertyCardProps) => {
   const [imageError, setImageError] = useState(false);
   const hasValidImage = isValidImageUrl(property.image);
 
@@ -25,12 +26,21 @@ export const PropertyCard = ({ property, onClick, disabled = false }: PropertyCa
 
   return (
     <Card
+      role="button"
+      tabIndex={disabled ? undefined : 0}
+      aria-label={`Ver detalles de ${property.name}, ubicada en ${property.address}, precio ${formatNumber(property.price)}`}
       className={`group flex h-full flex-col overflow-hidden rounded-2xl border border-border/60 bg-card shadow-sm transition-all duration-300 ${
         disabled
           ? "pointer-events-none opacity-60"
-          : "cursor-pointer hover:-translate-y-1 hover:shadow-xl"
+          : "cursor-pointer hover:-translate-y-1 hover:shadow-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
       }`}
       onClick={() => !disabled && onClick()}
+      onKeyDown={(e) => {
+        if (!disabled && (e.key === "Enter" || e.key === " ")) {
+          e.preventDefault();
+          onClick();
+        }
+      }}
     >
       <div className="relative aspect-[4/3] overflow-hidden bg-muted">
         {hasValidImage && !imageError && (
@@ -38,13 +48,20 @@ export const PropertyCard = ({ property, onClick, disabled = false }: PropertyCa
             src={property.image}
             alt={property.name}
             className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-105 z-0"
+            loading={isLCP ? "eager" : "lazy"}
+            decoding={isLCP ? "sync" : "async"}
+            fetchpriority={isLCP ? "high" : "low"}
+            sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+            width={800}
+            height={600}
             onError={() => {
               setImageError(true);
             }}
+            referrerPolicy="no-referrer-when-downgrade"
           />
         )}
         {showPlaceholder && (
-          <div className="absolute inset-0 z-10 bg-muted">
+          <div className="absolute inset-0 z-10 flex items-center justify-center bg-muted">
             <ImagePlaceholder size="md" />
           </div>
         )}

@@ -1,5 +1,6 @@
 import { useEffect, useState, KeyboardEvent } from "react";
 import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 
 interface PageJumpInputProps {
   currentPage: number;
@@ -48,10 +49,18 @@ export const PageJumpInput = ({
     }
   };
 
+  const inputId = "page-jump-input";
+
   return (
     <div className={`flex items-center gap-2 text-sm text-muted-foreground ${className ?? ""}`}>
-      {showLabel && <span>Ir a</span>}
+      {showLabel && (
+        <Label htmlFor={inputId} className="sr-only">
+          Ir a página
+        </Label>
+      )}
+      {showLabel && <span aria-hidden="true">Ir a</span>}
       <Input
+        id={inputId}
         type="number"
         min={1}
         max={safeTotalPages}
@@ -60,11 +69,12 @@ export const PageJumpInput = ({
         onBlur={submitValue}
         onKeyDown={handleKeyDown}
         disabled={disabled || safeTotalPages <= 1}
+        aria-label={showLabel ? undefined : `Ir a página, página actual ${currentPage} de ${safeTotalPages}`}
         className={`h-9 w-16 text-center text-foreground ${
           !showLabel && !showTotal ? "w-14 text-sm" : ""
         }`}
       />
-      {showTotal && <span>/ {safeTotalPages}</span>}
+      {showTotal && <span aria-hidden="true">/ {safeTotalPages}</span>}
     </div>
   );
 };

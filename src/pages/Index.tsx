@@ -1,7 +1,11 @@
-import { useState } from "react";
+import { useState, lazy, Suspense, useMemo } from "react";
 import { useQuery, keepPreviousData } from "@tanstack/react-query";
-import { PropertyFilters } from "@/components/PropertyFilters";
-import { PropertyDetail } from "@/components/PropertyDetail";
+import { PropertyFilters } from "@/components/properties/PropertyFilters";
+const PropertyDetail = lazy(() =>
+  import("@/components/properties/PropertyDetail").then(module => ({
+    default: module.PropertyDetail
+  }))
+);
 import { PageHeader } from "@/components/layout/PageHeader";
 import { PageFooter } from "@/components/layout/PageFooter";
 import { PropertiesHeader } from "@/components/properties/PropertiesHeader";
@@ -12,25 +16,22 @@ import { Pagination } from "@/components/pagination/Pagination";
 import { PageSizeSelector } from "@/components/pagination/PageSizeSelector";
 import {
   PropertyDetail as PropertyDetailType,
-  PropertyFilters as PropertyFiltersType,
   PropertyListData,
   PropertySummary,
 } from "@/types/property";
 import { propertiesService } from "@/services/properties";
-
-const DEFAULT_FILTERS: PropertyFiltersType = {
-  name: "",
-  address: "",
-  minPrice: undefined,
-  maxPrice: undefined,
-};
-
-const PAGE_SIZE_OPTIONS = [12, 24, 48];
+import { usePagination } from "@/hooks/usePagination";
+import { usePropertyFilters } from "@/hooks/usePropertyFilters";
+import { useLCPImagePreload } from "@/hooks/useLCPImagePreload";
+import { isValidImageUrl } from "@/utils/imageUtils";
+import { PAGE_SIZE_OPTIONS } from "@/constants/properties";
 
 const Index = () => {
-  const [filters, setFilters] = useState<PropertyFiltersType>(DEFAULT_FILTERS);
-  const [page, setPage] = useState(1);
-  const [pageSize, setPageSize] = useState(PAGE_SIZE_OPTIONS[0]);
+  const { filters, updateFilters, resetFilters } = usePropertyFilters();
+  const { page, pageSize, handlePageChange: baseHandlePageChange, handlePageSizeChange } = usePagination({
+    initialPage: 1,
+    initialPageSize: PAGE_SIZE_OPTIONS[0],
+  });
   const [selectedPropertyId, setSelectedPropertyId] = useState<string | null>(null);
 
   const {
@@ -58,24 +59,28 @@ const Index = () => {
   const total = data?.total ?? 0;
   const totalPages = data?.totalPages ?? 1;
 
-  const handleFilters = (nextFilters: PropertyFiltersType) => {
-    setFilters(nextFilters);
-    setPage(1);
+  const firstLCPImage = useMemo(() => {
+    const firstProperty = data?.items?.[0];
+    if (firstProperty && isValidImageUrl(firstProperty.image)) {
+      return firstProperty.image;
+    }
+    return null;
+  }, [data?.items]);
+
+  useLCPImagePreload(firstLCPImage);
+
+  const handlePageChange = (newPage: number) => {
+    baseHandlePageChange(newPage, totalPages);
+  };
+
+  const handleFilters = (nextFilters: typeof filters) => {
+    updateFilters(nextFilters);
+    handlePageChange(1);
   };
 
   const handleResetFilters = () => {
-    setFilters(DEFAULT_FILTERS);
-    setPage(1);
-  };
-
-  const handlePageChange = (nextPage: number) => {
-    if (nextPage < 1 || (data?.totalPages && nextPage > data.totalPages)) return;
-    setPage(nextPage);
-  };
-
-  const handlePageSizeChange = (size: number) => {
-    setPageSize(size);
-    setPage(1);
+    resetFilters();
+    handlePageChange(1);
   };
 
   const isEmpty = !isLoading && properties.length === 0;
@@ -135,16 +140,18 @@ const Index = () => {
         )}
       </main>
 
-      <PropertyDetail
-        property={propertyDetail ?? null}
-        open={!!selectedPropertyId}
-        isLoading={isDetailLoading}
-        onOpenChange={(open) => {
-          if (!open) {
-            setSelectedPropertyId(null);
-          }
-        }}
-      />
+      <Suspense fallback={null}>
+        <PropertyDetail
+          property={propertyDetail ?? null}
+          open={!!selectedPropertyId}
+          isLoading={isDetailLoading}
+          onOpenChange={(open) => {
+            if (!open) {
+              setSelectedPropertyId(null);
+            }
+          }}
+        />
+      </Suspense>
 
       <PageFooter />
     </div>

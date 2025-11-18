@@ -36,15 +36,25 @@ export const PaginationControls = ({
 
   return (
     <div className="flex items-center gap-3">
-      <Button variant="outline" onClick={handlePrevious} disabled={currentPage === 1 || disabled}>
+      <Button
+        variant="outline"
+        onClick={handlePrevious}
+        disabled={currentPage === 1 || disabled}
+        aria-label={`Ir a página anterior, página ${currentPage - 1}`}
+      >
         Anterior
       </Button>
-      <div className="hidden sm:block">{middleDesktop ?? defaultText}</div>
-      <div className="sm:hidden">{middleMobile ?? defaultText}</div>
+      <div className="hidden sm:block" aria-live="polite" aria-atomic="true">
+        {middleDesktop ?? defaultText}
+      </div>
+      <div className="sm:hidden" aria-live="polite" aria-atomic="true">
+        {middleMobile ?? defaultText}
+      </div>
       <Button
         variant="outline"
         onClick={handleNext}
         disabled={currentPage === totalPages || disabled || totalPages === 0}
+        aria-label={`Ir a página siguiente, página ${currentPage + 1}`}
       >
         Siguiente
       </Button>
