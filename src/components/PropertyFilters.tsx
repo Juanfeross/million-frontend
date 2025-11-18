@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState, type KeyboardEvent } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
@@ -7,33 +7,27 @@ import { Search, RotateCcw } from "lucide-react";
 import { PropertyFilters as PropertyFiltersType } from "@/types/property";
 
 interface PropertyFiltersProps {
+  value: PropertyFiltersType;
   onFilter: (filters: PropertyFiltersType) => void;
+  onReset: () => void;
 }
 
-export const PropertyFilters = ({ onFilter }: PropertyFiltersProps) => {
-  const [filters, setFilters] = useState<PropertyFiltersType>({
-    name: "",
-    address: "",
-    minPrice: 0,
-    maxPrice: 10000000,
-  });
+export const PropertyFilters = ({ value, onFilter, onReset }: PropertyFiltersProps) => {
+  const [filters, setFilters] = useState<PropertyFiltersType>(value);
+
+  useEffect(() => {
+    setFilters(value);
+  }, [value]);
 
   const handleSearch = () => {
     onFilter(filters);
   };
 
   const handleReset = () => {
-    const resetFilters = {
-      name: "",
-      address: "",
-      minPrice: 0,
-      maxPrice: 10000000,
-    };
-    setFilters(resetFilters);
-    onFilter(resetFilters);
+    onReset();
   };
 
-  const handleKeyPress = (e: React.KeyboardEvent) => {
+  const handleKeyPress = (e: KeyboardEvent) => {
     if (e.key === "Enter") {
       handleSearch();
     }
@@ -78,9 +72,9 @@ export const PropertyFilters = ({ onFilter }: PropertyFiltersProps) => {
             id="minPrice"
             type="number"
             placeholder="$0"
-            value={filters.minPrice || ""}
+            value={filters.minPrice ?? ""}
             onChange={(e) =>
-              setFilters({ ...filters, minPrice: Number(e.target.value) || 0 })
+              setFilters({ ...filters, minPrice: e.target.value ? Number(e.target.value) : undefined })
             }
             onKeyPress={handleKeyPress}
             className="bg-background border-border"
@@ -95,9 +89,9 @@ export const PropertyFilters = ({ onFilter }: PropertyFiltersProps) => {
             id="maxPrice"
             type="number"
             placeholder="$10,000,000"
-            value={filters.maxPrice || ""}
+            value={filters.maxPrice ?? ""}
             onChange={(e) =>
-              setFilters({ ...filters, maxPrice: Number(e.target.value) || 10000000 })
+              setFilters({ ...filters, maxPrice: e.target.value ? Number(e.target.value) : undefined })
             }
             onKeyPress={handleKeyPress}
             className="bg-background border-border"
@@ -106,15 +100,15 @@ export const PropertyFilters = ({ onFilter }: PropertyFiltersProps) => {
       </div>
 
       <div className="flex gap-3 mt-6">
-        <Button 
-          onClick={handleSearch} 
+        <Button
+          onClick={handleSearch}
           className="flex-1 md:flex-none bg-primary hover:bg-primary/90 text-primary-foreground"
         >
           <Search className="w-4 h-4 mr-2" />
           Buscar
         </Button>
-        <Button 
-          onClick={handleReset} 
+        <Button
+          onClick={handleReset}
           variant="outline"
           className="flex-1 md:flex-none"
         >

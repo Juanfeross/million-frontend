@@ -39,7 +39,7 @@ npm run preview
 
 ## Configuración adicional
 
-- Variables de entorno: copiar `.env.example` a `.env` y ajustar valores
+- Variables de entorno: copiar `.env.example` a `.env` y configurar `VITE_API_BASE_URL` apuntando a tu backend
 - Ajustar metadatos en `index.html` para la marca deseada
 
 ## Buenas prácticas
